@@ -1,0 +1,109 @@
+---
+name: {{name}}
+description: {{description}}
+version: 1.0.0
+author: {{author}}
+tags: [{{tags}}]
+dependencies: [{{dependencies}}]
+claude_version: 1.0.0
+---
+
+# {{name}}
+
+{{description}}
+
+## Overview
+
+This skill provides comprehensive functionality for...
+
+## Features
+
+- Feature 1: Description
+- Feature 2: Description
+- Feature 3: Description
+
+## Usage
+
+### Basic Usage
+
+```
+Input: your input here
+Output: expected output
+```
+
+### Advanced Usage
+
+```
+Input: complex input
+Output: complex output with explanations
+```
+
+## Configuration
+
+This skill accepts the following parameters:
+
+| Parameter | Type | Default | Description |
+|-----------|------|---------|-------------|
+| param1 | string | "default" | Description |
+| param2 | number | 42 | Description |
+
+## Examples
+
+### Example 1: Title
+
+**Input:**
+```
+Your input here
+```
+
+**Output:**
+```
+Expected output
+```
+
+### Example 2: Title
+
+**Input:**
+```
+Your input here
+```
+
+**Output:**
+```
+Expected output
+```
+
+## Error Handling
+
+This skill handles the following error cases:
+
+- Error 1: Description and solution
+- Error 2: Description and solution
+
+## Limitations
+
+- Limitation 1
+- Limitation 2
+
+## Best Practices
+
+1. Best practice 1
+2. Best practice 2
+3. Best practice 3
+
+## Troubleshooting
+
+### Problem: Title
+
+**Symptoms:** What you see
+**Solution:** How to fix it
+
+## Related Skills
+
+- [skill-name](link): Description
+- [skill-name](link): Description
+
+## Changelog
+
+### 1.0.0 (2024-01-01)
+- Initial release

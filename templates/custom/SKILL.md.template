@@ -1,0 +1,19 @@
+---
+name: {{name}}
+description: {{description}}
+version: 1.0.0
+author: {{author}}
+tags: [{{tags}}]
+---
+
+# {{name}}
+
+{{description}}
+
+## Usage
+
+{{content}}
+
+## Examples
+
+Add your examples here.

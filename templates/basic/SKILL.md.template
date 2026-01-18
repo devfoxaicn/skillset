@@ -1,0 +1,29 @@
+---
+name: {{name}}
+description: {{description}}
+version: 1.0.0
+author: {{author}}
+tags: [{{tags}}]
+---
+
+# {{name}}
+
+{{description}}
+
+## Usage
+
+Use this skill when you need to...
+
+## Examples
+
+Example 1:
+- Input: ...
+- Output: ...
+
+Example 2:
+- Input: ...
+- Output: ...
+
+## Notes
+
+Additional notes about this skill...
