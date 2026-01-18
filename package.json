@@ -4,7 +4,7 @@
   "description": "Your Claude Skills, Set and Ready - One-click installation tool for Claude Skills",
   "main": "dist/index.js",
   "bin": {
-    "skillset": "node ./dist/index.js"
+    "skillset": "./bin/skillset.js"
   },
   "scripts": {
     "build": "tsc",
@@ -50,6 +50,7 @@
   },
   "files": [
     "dist",
-    "templates"
+    "templates",
+    "bin"
   ]
 }
