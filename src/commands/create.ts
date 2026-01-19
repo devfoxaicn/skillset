@@ -9,6 +9,9 @@ import path from 'path';
 import { validateSkillId, validateSkillName, validateDescription, validateTags } from '../utils/validation';
 import { logger } from '../utils';
 import { getSafeFilename } from '../utils/path';
+import { SourceManager } from '../core';
+import { configLoader } from '../config';
+import { interactiveAICreation } from '../utils/ai-assistant';
 
 /** Template type */
 type TemplateType = 'basic' | 'advanced' | 'custom';
@@ -21,6 +24,7 @@ export function createCreateCommand(): Command {
 
   command
     .description('Create a new skill (interactive)')
+    .option('-a, --ai', 'Use AI-assisted creation mode')
     .option('-n, --name <name>', 'Skill name')
     .option('-d, --description <description>', 'Skill description')
     .option('-t, --template <type>', 'Template type (basic, advanced, custom)', 'basic')
@@ -37,6 +41,7 @@ export function createCreateCommand(): Command {
  * Handle create command logic
  */
 async function handleCreate(options: {
+  ai?: boolean;
   name?: string;
   description?: string;
   template?: TemplateType;
@@ -44,6 +49,12 @@ async function handleCreate(options: {
   nonInteractive?: boolean;
 }): Promise<void> {
   try {
+    // AI-assisted mode
+    if (options.ai && !options.nonInteractive) {
+      return await handleAICreation(options);
+    }
+
+    // Standard creation mode
     let skillName = options.name;
     let description = options.description;
     let template: TemplateType = options.template || 'basic';
@@ -387,4 +398,84 @@ claude-skills install ${name.toLowerCase().replace(/\s+/g, '-')}
 
 MIT
 `;
+}
+
+/**
+ * Handle AI-assisted creation
+ */
+async function handleAICreation(options: {
+  output?: string;
+  template?: TemplateType;
+}): Promise<void> {
+  try {
+    // Load existing skills for reference
+    const { config } = await configLoader.load();
+    const sourceManager = await SourceManager.fromConfigs(config.sources || []);
+    const existingSkills = await sourceManager.listAllSkills();
+
+    // Run AI-assisted interactive creation
+    const {
+      name,
+      description,
+      tags,
+      dependencies,
+      template,
+      content,
+    } = await interactiveAICreation(existingSkills);
+
+    // Generate skill ID
+    const skillId = getSafeFilename(name);
+
+    // Get author info
+    const author = process.env.USER || process.env.USERNAME || '';
+
+    // Create output directory
+    const outputDir = options.output || path.join(process.cwd(), skillId);
+    await fs.ensureDir(outputDir);
+
+    // Generate skill file
+    const skillContent = await generateFromTemplate(
+      template,
+      skillId,
+      name,
+      description,
+      author,
+      tags,
+      dependencies,
+      content
+    );
+
+    const skillFile = path.join(outputDir, 'SKILL.md');
+    await fs.writeFile(skillFile, skillContent, 'utf-8');
+
+    // Create additional files for advanced template
+    if (template === 'advanced') {
+      const readmePath = path.join(outputDir, 'README.md');
+      await fs.writeFile(
+        readmePath,
+        generateReadme(name, description),
+        'utf-8'
+      );
+    }
+
+    logger.newline();
+    logger.success(`✅ Created AI-generated skill: ${name}`);
+    logger.info(`📁 Location: ${outputDir}`);
+    logger.info(`📋 ID: ${skillId}`);
+    logger.newline();
+    logger.info('Next steps:');
+    logger.info(`  1. Review the generated content in ${outputDir}`);
+    logger.info(`  2. Test the skill locally`);
+    logger.info(`  3. Publish it to a GitHub repository`);
+    logger.info(`  4. Add the repository as a source in .skillset.json`);
+    logger.info(`  5. Run: skillset install ${skillId}`);
+
+  } catch (error) {
+    if ((error as any).message === 'User cancelled') {
+      logger.info('Creation cancelled.');
+      return;
+    }
+    logger.error(`AI creation failed: ${(error as Error).message}`);
+    process.exit(1);
+  }
 }

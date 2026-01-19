@@ -11,7 +11,10 @@ import { logger } from './utils';
 import {
   createInstallCommand,
   createSearchCommand,
+  createFindCommand,
   createListCommand,
+  createCheckCommand,
+  createSuggestCommand,
   createRemoveCommand,
   createCreateCommand,
   createUpdateCommand,
@@ -32,7 +35,10 @@ async function main(): Promise<void> {
   // Add subcommands
   program.addCommand(createInstallCommand());
   program.addCommand(createSearchCommand());
+  program.addCommand(createFindCommand());
   program.addCommand(createListCommand());
+  program.addCommand(createCheckCommand());
+  program.addCommand(createSuggestCommand());
   program.addCommand(createRemoveCommand());
   program.addCommand(createCreateCommand());
   program.addCommand(createUpdateCommand());
