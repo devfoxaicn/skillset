@@ -34,7 +34,10 @@
 ### 安装
 
 ```bash
-# 全局安装
+# 方式 1: 从 GitHub 安装（推荐）
+npm install -g devfoxaicn/skillset
+
+# 方式 2: 从 npm 安装
 npm install -g skillset
 
 # 验证安装
